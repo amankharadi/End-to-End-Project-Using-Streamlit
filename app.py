@@ -48,7 +48,7 @@ if uploaded_file is not None:
         st.divider()
 
         # Options for the multiselect
-        options = st.sidebar.multiselect("Pick one or more", ["Data Info", "Data Null Values", "Data Duplicates", "Data Describe"])
+        options = st.multiselect("Pick one or more", ["Data Info", "Data Null Values", "Data Duplicates", "Data Describe"])
         st.sidebar.divider()
         # Create columns for layout
         col1, col2 = st.columns(2)
