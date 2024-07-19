@@ -139,7 +139,7 @@ if uploaded_file is not None:
                 label_encoders[column] = LabelEncoder()
                 df_dropped[column] = label_encoders[column].fit_transform(df_dropped[column])
             elif num_unique > 2:
-                one_hot_encoders[column] = OneHotEncoder(sparse=False, drop='first')
+                one_hot_encoders[column] = OneHotEncoder(sparse_output=False, drop='first')
                 encoded_column = one_hot_encoders[column].fit_transform(df_dropped[[column]])
                 df_encoded = pd.DataFrame(encoded_column, columns=one_hot_encoders[column].get_feature_names_out([column]))
                 df_dropped = pd.concat([df_dropped.drop(column, axis=1), df_encoded], axis=1)
@@ -155,17 +155,9 @@ if uploaded_file is not None:
         if "Histogram" in vis_options:
             st.write("Histogram")
             selected_column = st.sidebar.selectbox("Select column for histogram", df_dropped.columns)
-            column_data = df_dropped[selected_column] 
-            values = column_data.value_counts().reset_index()
-            values.columns = ['Value', 'Count']  # Rename columns for clarity
             fig = px.histogram(df_dropped, x=selected_column, color_discrete_sequence=px.colors.qualitative.Dark24, title=f"Histogram of {selected_column}")
             st.plotly_chart(fig)
-            st.info(f"Value counts of {selected_column}:")
-            st.write(f"The column '{selected_column}' has {len(values)} unique values.\n")
-    
-    # Format counts as a paragraph
-            count_info = "\n".join([f"- '{row['Value']}' appears {row['Count']} times." for idx, row in values.iterrows()])
-            st.write(count_info)
+
 
         if "Scatter Plot" in vis_options:
             st.write("Scatter Plot")
